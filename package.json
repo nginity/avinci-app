@@ -7,3 +7,11 @@
     "lovable-tagger": "^1.0.19"
   }
 }
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "build:dev": "vite build --mode development",
+    "preview": "vite preview"
+  }
+}
