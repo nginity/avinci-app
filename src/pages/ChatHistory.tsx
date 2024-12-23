@@ -10,11 +10,14 @@ interface ChatMessage {
   user_id: string;
 }
 
+const RTL_LANGUAGES = ['he', 'fa'];
+
 export default function ChatHistory() {
   const { t, i18n } = useTranslation();
   const { toast } = useToast();
   const [chats, setChats] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState(true);
+  const isRTL = RTL_LANGUAGES.includes(i18n.language);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -34,7 +37,9 @@ export default function ChatHistory() {
         }
 
         if (profile?.preferred_language) {
+          console.log('Setting language to:', profile.preferred_language);
           i18n.changeLanguage(profile.preferred_language);
+          document.dir = RTL_LANGUAGES.includes(profile.preferred_language) ? 'rtl' : 'ltr';
         }
       } catch (error) {
         console.error('Error:', error);
@@ -77,7 +82,6 @@ export default function ChatHistory() {
 
     fetchChats();
 
-    // Subscribe to realtime changes
     const channel = supabase
       .channel('chat_changes')
       .on(
@@ -100,8 +104,8 @@ export default function ChatHistory() {
   }, [t, toast]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6 text-center">{t('chat.title')}</h1>
+    <div className={`container mx-auto px-4 py-8 ${isRTL ? 'rtl' : 'ltr'}`}>
+      <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">{t('chat.title')}</h1>
       
       {loading ? (
         <p className="text-center text-gray-600">{t('chat.loadingChats')}</p>
@@ -112,11 +116,13 @@ export default function ChatHistory() {
           {chats.map((chat) => (
             <div
               key={chat.id}
-              className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"
+              className={`bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow ${
+                isRTL ? 'text-right' : 'text-left'
+              }`}
             >
               <p className="text-gray-800">{chat.content}</p>
               <p className="text-sm text-gray-500 mt-2">
-                {new Date(chat.created_at).toLocaleString()}
+                {new Date(chat.created_at).toLocaleString(i18n.language)}
               </p>
             </div>
           ))}
