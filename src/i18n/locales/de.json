@@ -1,0 +1,8 @@
+{
+  "chat": {
+    "title": "Chatverlauf",
+    "noChats": "Keine Chatverläufe vorhanden",
+    "loadingChats": "Lade Chatverläufe...",
+    "errorLoading": "Fehler beim Laden der Chatverläufe"
+  }
+}

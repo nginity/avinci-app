@@ -1,0 +1,8 @@
+{
+  "chat": {
+    "title": "Chat History",
+    "noChats": "No chat history available",
+    "loadingChats": "Loading chat history...",
+    "errorLoading": "Error loading chat history"
+  }
+}
